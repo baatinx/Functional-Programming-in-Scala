@@ -1,0 +1,24 @@
+1. Referential transparency and purity
+An expression e is referentially transparent if, for all programs p, all occurrences of e
+in p can be replaced by the result of evaluating e without affecting the meaning of p.
+A function f is pure if the expression f(x) is referentially transparent for all referentially transparent x.
+
+2. For buyCoffee to be pure, by our definition of RT, it must be the case that
+p(buyCoffee(aliceCreditCard)) behaves the same as p(new Coffee()), for any p.
+This clearly doesn’t hold—the program new Coffee() doesn’t do anything, whereas
+buyCoffee(aliceCreditCard) will contact the credit card company and authorize a
+charge. Already we have an observable difference between the two programs.
+
+3. When expressions are referentially transparent, we can
+imagine that computation proceeds much like we’d solve an algebraic equation. We
+fully expand every part of an expression, replacing all variables with their referents,
+and then reduce it to its simplest form. At each step we replace a term with an
+equivalent one; computation proceeds by substituting equals for equals. In other words,
+RT enables equational reasoning about programs
+
+4.  Scala detects this sort of self-recursion and compiles it to the same
+sort of bytecode as would be emitted for a while loop,3
+ so long as the recursive call is
+in tail position. See the sidebar for the technical details on this, but the basic idea is
+that this optimization4
+ (called tail call elimination) is applied when there’s no additional work left to do after the recursive call returns.
